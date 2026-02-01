@@ -4,47 +4,55 @@ import SignUpForm from './components/SignUpForm/SignUpForm';
 import SignInForm from './components/SignInForm/SignInForm';
 import Landing from './components/Landing/Landing';
 import Dashboard from './components/Dashboard/Dashboard';
-import HootList from './components/HootList/HootList';
-import HootDetails from './components/HootDetails/HootDetails';
-import HootForm from './components/HootForm/HootForm';
-import * as hootService from './services/hootService';
+import FoundItemList from './components/FoundItemList/FoundItemList';
+import FoundItemDetails from './components/FoundItemDetails/FoundItemDetails';
+import FoundItemForm from './components/FoundItemForm/FoundItemForm';
+import ClaimList from './components/ClaimList/ClaimList';
+import * as foundItemService from './services/foundItemService';
+import * as claimService from './services/claimService';
 import { useContext, useState, useEffect } from 'react';
 
 import { UserContext } from './contexts/UserContext';
 
 const App = () => {
   const { user } = useContext(UserContext);
-  const navigate = useNavigate(); // ← Move this here, at the top!
+  const navigate = useNavigate();
 
-  const [hoots, setHoots] = useState([]);
+  const [foundItems, setFoundItems] = useState([]);
+  const [claims, setClaims] = useState([]);
 
-  const handleAddHoot = async (hootFormData) => {
-    const newHoot = await hootService.create(hootFormData);
-    setHoots([newHoot, ...hoots]);
-    navigate('/hoots');
+  const handleAddFoundItem = async (foundItemFormData) => {
+    const newFoundItem = await foundItemService.create(foundItemFormData);
+    setFoundItems([newFoundItem, ...foundItems]);
+    navigate('/founditems');
   };
 
-  const handleDeleteHoot = async (hootId) => {
-    const deletedHoot = await hootService.deleteHoot(hootId);
-    // Filter state using deletedHoot._id:
-    setHoots(hoots.filter((hoot) => hoot._id !== deletedHoot._id));
-    navigate('/hoots');
+  const handleDeleteFoundItem = async (foundItemId) => {
+    const deletedFoundItem = await foundItemService.deleteFoundItem(foundItemId);
+    setFoundItems(foundItems.filter((item) => item._id !== deletedFoundItem._id));
+    navigate('/founditems');
   };
 
-const handleUpdateHoot = async (hootId, hootFormData) => {
-  const updatedHoot = await hootService.update(hootId, hootFormData);
-  setHoots(hoots.map((hoot) => (hootId === hoot._id ? updatedHoot : hoot)));
-  navigate(`/hoots/${hootId}`);
-};
-
+  const handleUpdateFoundItem = async (foundItemId, foundItemFormData) => {
+    const updatedFoundItem = await foundItemService.update(foundItemId, foundItemFormData);
+    setFoundItems(foundItems.map((item) => (foundItemId === item._id ? updatedFoundItem : item)));
+    navigate(`/founditems/${foundItemId}`);
+  };
 
   useEffect(() => {
-    const fetchAllHoots = async () => {
-      const hootsData = await hootService.index();
-      setHoots(hootsData);
+    const fetchAllFoundItems = async () => {
+      const foundItemsData = await foundItemService.index();
+      setFoundItems(foundItemsData);
     };
+    fetchAllFoundItems(); // Public - no auth required
+  }, []);
 
-    if (user) fetchAllHoots();
+  useEffect(() => {
+    const fetchClaims = async () => {
+      const claimsData = await claimService.index();
+      setClaims(claimsData);
+    };
+    if (user) fetchClaims(); // Only fetch if logged in
   }, [user]);
 
   return (
@@ -52,24 +60,27 @@ const handleUpdateHoot = async (hootId, hootFormData) => {
       <NavBar />
       <Routes>
         <Route path='/' element={user ? <Dashboard /> : <Landing />} />
+        
+        {/* Public route - anyone can view found items */}
+        <Route path='/founditems' element={<FoundItemList foundItems={foundItems} />} />
+        <Route path='/founditems/:foundItemId' element={<FoundItemDetails />} />
+
         {user ? (
           <>
             {/* Protected routes (available only to signed-in users) */}
-            <Route
-              path='/hoots/new'
-              element={<HootForm handleAddHoot={handleAddHoot} />}
-            />
+            
+            {/* STAFF only route */}
+            {user.role === 'STAFF' && (
+              <Route
+                path='/founditems/new'
+                element={<FoundItemForm handleAddFoundItem={handleAddFoundItem} />}
+              />
+            )}
 
-            <Route
-              path='/hoots/:hootId/edit'
-              element={<HootForm handleUpdateHoot={handleUpdateHoot} />}
-            />
-
-            <Route path='/hoots' element={<HootList hoots={hoots} />} />
-
-            <Route
-              path='/hoots/:hootId'
-              element={<HootDetails handleDeleteHoot={handleDeleteHoot} />}
+            {/* Claims routes - all authenticated users */}
+            <Route 
+              path='/claims' 
+              element={<ClaimList claims={claims} userRole={user.role} />} 
             />
           </>
         ) : (

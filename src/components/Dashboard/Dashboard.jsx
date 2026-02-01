@@ -1,36 +1,35 @@
-import { useEffect, useState, useContext } from 'react';
-
+import { useContext } from 'react';
+import { Link } from 'react-router';
 import { UserContext } from '../../contexts/UserContext';
-
-import * as userService from '../../services/userService';
 
 const Dashboard = () => {
   const { user } = useContext(UserContext);
-  const [ users, setUsers ] = useState([]);
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const fetchedUsers = await userService.index();
-        setUsers(fetchedUsers);
-      } catch (err) {
-        console.log(err)
-      }
-    }
-    if (user) fetchUsers();
-  }, [user]);
 
   return (
     <main>
-      <h1>Welcome, {user.username}</h1>
-      <p>
-        This is the dashboard page where you can see a list of all the users.
-      </p>
-      <ul>
-        {users.map(user => (
-          <li key={user._id}>{user.username}</li>
-        ))}
-      </ul>
+      <h1>Welcome to Claim & Regain, {user.username}!</h1>
+      <p>Your role: <strong>{user.role}</strong></p>
+      
+      {user.role === 'STAFF' ? (
+        <div>
+          <h2>Staff Dashboard</h2>
+          <p>As staff, you can:</p>
+          <ul>
+            <li><Link to='/founditems/new'>Log New Found Items</Link></li>
+            <li><Link to='/claims'>Review Claims</Link></li>
+            <li><Link to='/founditems'>View All Found Items</Link></li>
+          </ul>
+        </div>
+      ) : (
+        <div>
+          <h2>Visitor Dashboard</h2>
+          <p>As a visitor, you can:</p>
+          <ul>
+            <li><Link to='/founditems'>Browse Found Items</Link></li>
+            <li><Link to='/claims'>View My Claims</Link></li>
+          </ul>
+        </div>
+      )}
     </main>
   );
 };
