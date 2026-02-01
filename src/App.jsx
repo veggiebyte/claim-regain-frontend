@@ -11,6 +11,7 @@ import ClaimList from './components/ClaimList/ClaimList';
 import * as foundItemService from './services/foundItemService';
 import * as claimService from './services/claimService';
 import StaffDashboard from './components/StaffDashboard/StaffDashboard';
+import StaffItemDetails from './components/StaffDashboard/StaffItemDetails';
 import { useContext, useState, useEffect } from 'react';
 
 import { UserContext } from './contexts/UserContext';
@@ -73,6 +74,13 @@ const App = () => {
             {/* STAFF only route - dashboard */}
             {user.role === 'STAFF' && (
               <Route path='/staff/dashboard' element={<StaffDashboard />} />
+            )}
+
+            {user.role === 'STAFF' && (
+              <>
+                <Route path='/staff/dashboard' element={<StaffDashboard />} />
+                <Route path='/staff/founditems/:foundItemId' element={<StaffItemDetails />} />
+              </>
             )}
 
             {/* STAFF only route */}
