@@ -10,6 +10,7 @@ import FoundItemForm from './components/FoundItemForm/FoundItemForm';
 import ClaimList from './components/ClaimList/ClaimList';
 import * as foundItemService from './services/foundItemService';
 import * as claimService from './services/claimService';
+import StaffDashboard from './components/StaffDashboard/StaffDashboard';
 import { useContext, useState, useEffect } from 'react';
 
 import { UserContext } from './contexts/UserContext';
@@ -60,7 +61,7 @@ const App = () => {
       <NavBar />
       <Routes>
         <Route path='/' element={user ? <Dashboard /> : <Landing />} />
-        
+
         {/* Public route - anyone can view found items */}
         <Route path='/founditems' element={<FoundItemList foundItems={foundItems} />} />
         <Route path='/founditems/:foundItemId' element={<FoundItemDetails />} />
@@ -68,7 +69,12 @@ const App = () => {
         {user ? (
           <>
             {/* Protected routes (available only to signed-in users) */}
-            
+
+            {/* STAFF only route - dashboard */}
+            {user.role === 'STAFF' && (
+              <Route path='/staff/dashboard' element={<StaffDashboard />} />
+            )}
+
             {/* STAFF only route */}
             {user.role === 'STAFF' && (
               <Route
@@ -78,9 +84,9 @@ const App = () => {
             )}
 
             {/* Claims routes - all authenticated users */}
-            <Route 
-              path='/claims' 
-              element={<ClaimList claims={claims} userRole={user.role} />} 
+            <Route
+              path='/claims'
+              element={<ClaimList claims={claims} userRole={user.role} />}
             />
           </>
         ) : (

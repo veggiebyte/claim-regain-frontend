@@ -9,15 +9,16 @@ const Dashboard = () => {
     <main>
       <h1>Welcome to Claim & Regain, {user.username}!</h1>
       <p>Your role: <strong>{user.role}</strong></p>
-      
+
       {user.role === 'STAFF' ? (
         <div>
           <h2>Staff Dashboard</h2>
           <p>As staff, you can:</p>
           <ul>
+            <li><Link to='/staff/dashboard'>View Staff Dashboard (All Items)</Link></li>
             <li><Link to='/founditems/new'>Log New Found Items</Link></li>
             <li><Link to='/claims'>Review Claims</Link></li>
-            <li><Link to='/founditems'>View All Found Items</Link></li>
+            <li><Link to='/founditems'>View Public Found Items List</Link></li>
           </ul>
         </div>
       ) : (
