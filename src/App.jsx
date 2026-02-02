@@ -3,7 +3,6 @@ import NavBar from './components/NavBar/NavBar';
 import SignUpForm from './components/SignUpForm/SignUpForm';
 import SignInForm from './components/SignInForm/SignInForm';
 import Landing from './components/Landing/Landing';
-import Dashboard from './components/Dashboard/Dashboard';
 import FoundItemList from './components/FoundItemList/FoundItemList';
 import FoundItemDetails from './components/FoundItemDetails/FoundItemDetails';
 import FoundItemForm from './components/FoundItemForm/FoundItemForm';
@@ -62,7 +61,7 @@ const App = () => {
     <>
       <NavBar />
       <Routes>
-        <Route path='/' element={user ? <Dashboard /> : <Landing />} />
+        <Route path='/' element={<Landing />} />
 
         {/* Public routes - anyone can view found items */}
         <Route path='/founditems' element={<FoundItemList foundItems={foundItems} />} />
