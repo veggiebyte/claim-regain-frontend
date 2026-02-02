@@ -1,10 +1,16 @@
 import { Link } from 'react-router';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { UserContext } from '../../contexts/UserContext';
+import Modal from '../Modal/Modal';
+import ClaimForm from '../ClaimForm/ClaimForm';
 
 const FoundItemList = ({ foundItems }) => {
+  const { user } = useContext(UserContext);
   const [sortBy, setSortBy] = useState('dateFound');
   const [sortOrder, setSortOrder] = useState('desc');
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   if (!foundItems || foundItems.length === 0) {
     return (
@@ -26,7 +32,16 @@ const FoundItemList = ({ foundItems }) => {
     }
   };
 
-  // Filter items by search query
+  const handleViewClaim = (item) => {
+    setSelectedItem(item);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedItem(null);
+  };
+
   const filteredItems = foundItems.filter(item => {
     if (!searchQuery) return true;
     const query = searchQuery.toLowerCase();
@@ -38,7 +53,6 @@ const FoundItemList = ({ foundItems }) => {
     );
   });
 
-  // Sort the filtered items
   const sortedItems = [...filteredItems].sort((a, b) => {
     let aVal, bVal;
 
@@ -122,15 +136,38 @@ const FoundItemList = ({ foundItems }) => {
                 <td>{item.category}</td>
                 <td>{item.locationFound}</td>
                 <td>
-                  <Link to={`/founditems/${item._id}`} className="view-link">
+                  <button onClick={() => handleViewClaim(item)} className="view-link" style={{background: 'none', border: 'none', cursor: 'pointer'}}>
                     View/Claim →
-                  </Link>
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        {selectedItem && (
+          <div>
+            <h2>{selectedItem.publicDescription}</h2>
+            <p><strong>Category:</strong> {selectedItem.category}</p>
+            <p><strong>Color:</strong> {selectedItem.color}</p>
+            <p><strong>Location Found:</strong> {selectedItem.locationFound}</p>
+            <p><strong>Date Found:</strong> {new Date(selectedItem.dateFound).toLocaleDateString()}</p>
+
+            {!user ? (
+              <div>
+                <p style={{marginTop: '24px'}}>You need to <Link to="/sign-in" onClick={closeModal}>sign in</Link> or <Link to="/sign-up" onClick={closeModal}>sign up</Link> to file a claim.</p>
+              </div>
+            ) : (
+              <div>
+                <h3>Is this yours?</h3>
+                <ClaimForm foundItemId={selectedItem._id} verificationQuestions={selectedItem.verificationQuestions} onSuccess={closeModal} />
+              </div>
+            )}
+          </div>
+        )}
+      </Modal>
     </div>
   );
 };
