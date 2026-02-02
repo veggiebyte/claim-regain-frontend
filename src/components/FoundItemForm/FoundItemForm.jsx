@@ -192,9 +192,15 @@ const FoundItemForm = ({ handleAddFoundItem }) => {
                     </label>
                 </div>
             ))}
-            <button type="button" onClick={addQuestion}>Add Another Question</button>
+<div className="cta-buttons">
+  <button type="button" onClick={addQuestion} className="btn-secondary">
+    Add Another Question
+  </button>
 
-            <button type="submit">Log Found Item</button>
+  <button type="submit" className="btn-primary">
+    Log Found Item
+  </button>
+</div>
         </form>
     );
 };

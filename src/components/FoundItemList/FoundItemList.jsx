@@ -97,9 +97,9 @@ const FoundItemList = ({ foundItems }) => {
             <p>Lost something? Browse our found items below. Think you see yours? Click 'View/Claim' to get started.</p>
 
             <div className="search-bar">
-              <input 
-                type="text" 
-                placeholder="🔍 Search by item, category, or location..." 
+              <input
+                type="text"
+                placeholder="🔍 Search by item, category, or location..."
                 className="search-input"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -136,7 +136,7 @@ const FoundItemList = ({ foundItems }) => {
                 <td>{item.category}</td>
                 <td>{item.locationFound}</td>
                 <td>
-                  <button onClick={() => handleViewClaim(item)} className="view-link" style={{background: 'none', border: 'none', cursor: 'pointer'}}>
+                  <button onClick={() => handleViewClaim(item)} className="view-link">
                     View/Claim →
                   </button>
                 </td>
@@ -157,7 +157,7 @@ const FoundItemList = ({ foundItems }) => {
 
             {!user ? (
               <div>
-                <p style={{marginTop: '24px'}}>You need to <Link to="/sign-in" onClick={closeModal}>sign in</Link> or <Link to="/sign-up" onClick={closeModal}>sign up</Link> to file a claim.</p>
+                <p>You need to <Link to="/sign-in" onClick={closeModal}>sign in</Link> or <Link to="/sign-up" onClick={closeModal}>sign up</Link> to file a claim.</p>
               </div>
             ) : (
               <div>
