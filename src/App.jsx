@@ -12,6 +12,7 @@ import * as foundItemService from './services/foundItemService';
 import * as claimService from './services/claimService';
 import StaffDashboard from './components/StaffDashboard/StaffDashboard';
 import StaffItemDetails from './components/StaffDashboard/StaffItemDetails';
+import FoundItemEditForm from './components/FoundItemForm/FoundItemEditForm';
 import { useContext, useState, useEffect } from 'react';
 
 import { UserContext } from './contexts/UserContext';
@@ -26,7 +27,7 @@ const App = () => {
   const handleAddFoundItem = async (foundItemFormData) => {
     const newFoundItem = await foundItemService.create(foundItemFormData);
     setFoundItems([newFoundItem, ...foundItems]);
-    navigate('/founditems');
+    navigate('/staff/dashboard');
   };
 
   const handleDeleteFoundItem = async (foundItemId) => {
@@ -46,7 +47,7 @@ const App = () => {
       const foundItemsData = await foundItemService.index();
       setFoundItems(foundItemsData);
     };
-    fetchAllFoundItems(); // Public - no auth required
+    fetchAllFoundItems();
   }, []);
 
   useEffect(() => {
@@ -54,7 +55,7 @@ const App = () => {
       const claimsData = await claimService.index();
       setClaims(claimsData);
     };
-    if (user) fetchClaims(); // Only fetch if logged in
+    if (user) fetchClaims();
   }, [user]);
 
   return (
@@ -63,32 +64,20 @@ const App = () => {
       <Routes>
         <Route path='/' element={user ? <Dashboard /> : <Landing />} />
 
-        {/* Public route - anyone can view found items */}
+        {/* Public routes - anyone can view found items */}
         <Route path='/founditems' element={<FoundItemList foundItems={foundItems} />} />
         <Route path='/founditems/:foundItemId' element={<FoundItemDetails />} />
 
         {user ? (
           <>
-            {/* Protected routes (available only to signed-in users) */}
-
-            {/* STAFF only route - dashboard */}
-            {user.role === 'STAFF' && (
-              <Route path='/staff/dashboard' element={<StaffDashboard />} />
-            )}
-
+            {/* STAFF only routes */}
             {user.role === 'STAFF' && (
               <>
                 <Route path='/staff/dashboard' element={<StaffDashboard />} />
                 <Route path='/staff/founditems/:foundItemId' element={<StaffItemDetails />} />
+                <Route path='/staff/founditems/:foundItemId/edit' element={<FoundItemEditForm />} />
+                <Route path='/founditems/new' element={<FoundItemForm handleAddFoundItem={handleAddFoundItem} />} />
               </>
-            )}
-
-            {/* STAFF only route */}
-            {user.role === 'STAFF' && (
-              <Route
-                path='/founditems/new'
-                element={<FoundItemForm handleAddFoundItem={handleAddFoundItem} />}
-              />
             )}
 
             {/* Claims routes - all authenticated users */}

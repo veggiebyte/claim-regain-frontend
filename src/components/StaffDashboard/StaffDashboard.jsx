@@ -46,11 +46,11 @@ const StaffDashboard = () => {
                         {foundItems.map((item) => (
                             <tr key={item._id}>
                                 <td>
-                                    {item.imageUrls && item.imageUrls[0] ? (
-                                        <img src={item.imageUrls[0]} alt={item.title} style={{ width: '80px', height: '80px', objectFit: 'cover' }} />
-                                    ) : (
-                                        <div style={{ width: '80px', height: '80px', backgroundColor: '#ccc' }}>No photo</div>
-                                    )}
+                                  {item.imageUrls && item.imageUrls[0] ? (
+    <img src={item.imageUrls[0]} alt={item.title} style={{ width: '80px', height: '80px', objectFit: 'contain', backgroundColor: '#f0f0f0' }} />
+) : (
+    <div style={{ width: '80px', height: '80px', backgroundColor: '#ccc' }}>No photo</div>
+)}
                                 </td>
                                 <td><strong>{item.title}</strong><br />{item.publicDescription}</td>
                                 <td>{new Date(item.dateFound).toLocaleDateString()}</td>
