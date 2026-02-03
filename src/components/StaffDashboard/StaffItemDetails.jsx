@@ -22,60 +22,71 @@ const StaffItemDetails = () => {
     }
   };
 
-  if (!foundItem) return <p>Loading...</p>;
+  if (!foundItem) return (
+    <div className="page-content">
+      <div className="card text-center">
+        <p>Loading...</p>
+      </div>
+    </div>
+  );
 
   return (
-    <div>
-      <h1>Staff View - Item Details</h1>
-      
-      <h2>{foundItem.title}</h2>
-      
-      <div>
-        <h3>Photos:</h3>
-        {foundItem.imageUrls && foundItem.imageUrls.length > 0 ? (
-          foundItem.imageUrls.map((url, index) => (
-            url && <img key={index} src={url} alt={`${foundItem.title} ${index + 1}`} style={{ maxWidth: '300px', margin: '10px' }} />
-          ))
-        ) : (
-          <p>No photos</p>
-        )}
-      </div>
+    <div className="page-content">
+      <div className="detail-wrapper">
+        <div className="card detail-card">
+          <h2 className="text-center">{foundItem.title}</h2>
+          
+          {foundItem.imageUrls && foundItem.imageUrls.length > 0 && (
+            <div className="mb-20">
+              <h3>Photos:</h3>
+              <div className="photo-grid">
+                {foundItem.imageUrls.map((url, index) => (
+                  url && <img key={index} src={url} alt={`${foundItem.title} ${index + 1}`} />
+                ))}
+              </div>
+            </div>
+          )}
 
-      <h3>Public Information:</h3>
-      <p><strong>Public Description:</strong> {foundItem.publicDescription}</p>
-      <p><strong>Category:</strong> {foundItem.category}</p>
-      <p><strong>Color:</strong> {foundItem.color}</p>
-      <p><strong>Date Found:</strong> {new Date(foundItem.dateFound).toLocaleDateString()}</p>
-      <p><strong>Location Found:</strong> {foundItem.locationFound}</p>
+          <h3>Public Information:</h3>
+          <p><strong>Public Description:</strong> {foundItem.publicDescription}</p>
+          <p><strong>Category:</strong> {foundItem.category}</p>
+          <p><strong>Color:</strong> {foundItem.color}</p>
+          <p><strong>Date Found:</strong> {new Date(foundItem.dateFound).toLocaleDateString()}</p>
+          <p><strong>Location Found:</strong> {foundItem.locationFound}</p>
 
-      <h3>Staff-Only Information:</h3>
-      <p><strong>Private Notes:</strong> {foundItem.privateNotes || 'None'}</p>
-      <p><strong>Storage Location:</strong> {foundItem.storageLocation || 'Not specified'}</p>
-      <p><strong>Requires ID for Pickup:</strong> {foundItem.requiresIdForPickup ? 'Yes' : 'No'}</p>
-      <p><strong>Status:</strong> {foundItem.status}</p>
+          <h3>Staff-Only Information:</h3>
+          <p><strong>Private Notes:</strong> {foundItem.privateNotes || 'None'}</p>
+          <p><strong>Storage Location:</strong> {foundItem.storageLocation || 'Not specified'}</p>
+          <p><strong>Requires ID for Pickup:</strong> {foundItem.requiresIdForPickup ? 'Yes' : 'No'}</p>
+          <p><strong>Status:</strong> {foundItem.status}</p>
 
-      <h3>Verification Questions:</h3>
-      {foundItem.verificationQuestions && foundItem.verificationQuestions.length > 0 ? (
-        <ul>
-          {foundItem.verificationQuestions.map((q, index) => (
-            <li key={index}>
-              <strong>Q:</strong> {q.question} <br />
-              <strong>A:</strong> {q.answer}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No verification questions</p>
-      )}
+          <h3>Verification Questions:</h3>
+          {foundItem.verificationQuestions && foundItem.verificationQuestions.length > 0 ? (
+            <div>
+              {foundItem.verificationQuestions.map((q, index) => (
+                <div key={index} className="mb-20">
+                  <p><strong>Q:</strong> {q.question}</p>
+                  <p><strong>A:</strong> {q.answer}</p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>No verification questions</p>
+          )}
 
-      <div>
-        <Link to={`/staff/founditems/${foundItemId}/edit`}>
-          <button>Edit Item</button>
-        </Link>
-        <button onClick={handleDelete}>Delete Item</button>
-        <Link to="/staff/dashboard">
-          <button>Back to Dashboard</button>
-        </Link>
+<div className="cta-buttons mt-20">
+  <Link to={`/staff/founditems/${foundItemId}/edit`} className="btn-primary btn-large">
+    Edit Item
+  </Link>
+  <Link to="#" onClick={(e) => { e.preventDefault(); handleDelete(); }} className="btn-primary btn-large">
+    Delete Item
+  </Link>
+</div>
+
+<div className="text-center mt-20">
+  <Link to="/staff/dashboard">← Back to Dashboard</Link>
+</div>
+        </div>
       </div>
     </div>
   );

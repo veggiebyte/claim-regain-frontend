@@ -52,160 +52,171 @@ const FoundItemEditForm = () => {
     }
   };
 
-  if (!formData) return <p>Loading...</p>;
+  if (!formData) return (
+    <div className="page-content">
+      <div className="card text-center">
+        <p>Loading...</p>
+      </div>
+    </div>
+  );
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Edit Found Item</h2>
-      
-      <label>
-        Title (Staff Reference):
-        <input
-          type="text"
-          name="title"
-          value={formData.title}
-          onChange={handleChange}
-          required
-        />
-      </label>
-
-      <label>
-        Category:
-        <input
-          type="text"
-          name="category"
-          value={formData.category}
-          onChange={handleChange}
-          required
-        />
-      </label>
-
-      <label>
-        Color:
-        <input
-          type="text"
-          name="color"
-          value={formData.color || ''}
-          onChange={handleChange}
-        />
-      </label>
-
-      <label>
-        Public Description (Vague):
-        <textarea
-          name="publicDescription"
-          value={formData.publicDescription}
-          onChange={handleChange}
-          placeholder="Vague description visible to public"
-          required
-        />
-      </label>
-
-      <label>
-        Private Notes (Staff Only):
-        <textarea
-          name="privateNotes"
-          value={formData.privateNotes || ''}
-          onChange={handleChange}
-          placeholder="Detailed notes not visible to public"
-        />
-      </label>
-
-      <label>
-        Date Found:
-        <input
-          type="date"
-          name="dateFound"
-          value={formData.dateFound ? formData.dateFound.split('T')[0] : ''}
-          onChange={handleChange}
-          required
-        />
-      </label>
-
-      <label>
-        Location Found:
-        <input
-          type="text"
-          name="locationFound"
-          value={formData.locationFound}
-          onChange={handleChange}
-          required
-        />
-      </label>
-
-      <label>
-        Storage Location:
-        <input
-          type="text"
-          name="storageLocation"
-          value={formData.storageLocation || ''}
-          onChange={handleChange}
-        />
-      </label>
-
-      <h3>Item Photos (Staff Only - optional)</h3>
-      {formData.imageUrls && formData.imageUrls.map((url, index) => (
-        <label key={index}>
-          Image URL {index + 1}:
+    <div className="page-content">
+      <form onSubmit={handleSubmit}>
+        <h2>Edit Found Item</h2>
+        
+        <label>
+          Title (Staff Reference):
           <input
             type="text"
-            value={url || ''}
-            onChange={(e) => handleImageChange(index, e.target.value)}
-            placeholder="https://example.com/image.jpg"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            required
           />
         </label>
-      ))}
 
-      <label>
-        Requires ID for Pickup:
-        <input
-          type="checkbox"
-          name="requiresIdForPickup"
-          checked={formData.requiresIdForPickup}
-          onChange={handleChange}
-        />
-      </label>
+        <label>
+          Category:
+          <input
+            type="text"
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
+            required
+          />
+        </label>
 
-      <label>
-        Status:
-        <select name="status" value={formData.status} onChange={handleChange}>
-          <option value="FOUND">FOUND</option>
-          <option value="CLAIMED">CLAIMED</option>
-          <option value="DONATED">DONATED</option>
-          <option value="DISPOSED">DISPOSED</option>
-        </select>
-      </label>
+        <label>
+          Color:
+          <input
+            type="text"
+            name="color"
+            value={formData.color || ''}
+            onChange={handleChange}
+          />
+        </label>
 
-      <h3>Verification Questions</h3>
-      {formData.verificationQuestions && formData.verificationQuestions.map((q, index) => (
-        <div key={index}>
-          <label>
-            Question {index + 1}:
+        <label>
+          Public Description (Vague):
+          <textarea
+            name="publicDescription"
+            value={formData.publicDescription}
+            onChange={handleChange}
+            placeholder="Vague description visible to public"
+            required
+          />
+        </label>
+
+        <label>
+          Private Notes (Staff Only):
+          <textarea
+            name="privateNotes"
+            value={formData.privateNotes || ''}
+            onChange={handleChange}
+            placeholder="Detailed notes not visible to public"
+          />
+        </label>
+
+        <label>
+          Date Found:
+          <input
+            type="date"
+            name="dateFound"
+            value={formData.dateFound ? formData.dateFound.split('T')[0] : ''}
+            onChange={handleChange}
+            required
+          />
+        </label>
+
+        <label>
+          Location Found:
+          <input
+            type="text"
+            name="locationFound"
+            value={formData.locationFound}
+            onChange={handleChange}
+            required
+          />
+        </label>
+
+        <label>
+          Storage Location:
+          <input
+            type="text"
+            name="storageLocation"
+            value={formData.storageLocation || ''}
+            onChange={handleChange}
+          />
+        </label>
+
+        <h3>Item Photos (Staff Only - optional)</h3>
+        {formData.imageUrls && formData.imageUrls.map((url, index) => (
+          <label key={index}>
+            Image URL {index + 1}:
             <input
               type="text"
-              value={q.question}
-              onChange={(e) => handleQuestionChange(index, 'question', e.target.value)}
-              placeholder="e.g., What brand is the item?"
+              value={url || ''}
+              onChange={(e) => handleImageChange(index, e.target.value)}
+              placeholder="https://example.com/image.jpg"
             />
           </label>
-          <label>
-            Answer:
-            <input
-              type="text"
-              value={q.answer}
-              onChange={(e) => handleQuestionChange(index, 'answer', e.target.value)}
-              placeholder="Correct answer"
-            />
-          </label>
+        ))}
+
+        <label>
+          Requires ID for Pickup:
+          <input
+            type="checkbox"
+            name="requiresIdForPickup"
+            checked={formData.requiresIdForPickup}
+            onChange={handleChange}
+          />
+        </label>
+
+        <label>
+          Status:
+          <select name="status" value={formData.status} onChange={handleChange}>
+            <option value="FOUND">FOUND</option>
+            <option value="CLAIMED">CLAIMED</option>
+            <option value="DONATED">DONATED</option>
+            <option value="DISPOSED">DISPOSED</option>
+          </select>
+        </label>
+
+        <h3>Verification Questions</h3>
+        {formData.verificationQuestions && formData.verificationQuestions.map((q, index) => (
+          <div key={index}>
+            <label>
+              Question {index + 1}:
+              <input
+                type="text"
+                value={q.question}
+                onChange={(e) => handleQuestionChange(index, 'question', e.target.value)}
+                placeholder="e.g., What brand is the item?"
+              />
+            </label>
+            <label>
+              Answer:
+              <input
+                type="text"
+                value={q.answer}
+                onChange={(e) => handleQuestionChange(index, 'answer', e.target.value)}
+                placeholder="Correct answer"
+              />
+            </label>
+          </div>
+        ))}
+        
+        <button type="button" onClick={addQuestion} className="btn-secondary">
+          Add Another Question
+        </button>
+
+        <div className="cta-buttons">
+          <button type="submit" className="btn-primary">Update Item</button>
+          <button type="button" onClick={() => navigate('/staff/dashboard')} className="btn-secondary">Cancel</button>
         </div>
-      ))}
-      <button type="button" onClick={addQuestion}>Add Another Question</button>
-
-      <div>
-        <button type="submit">Update Item</button>
-        <button type="button" onClick={() => navigate('/staff/dashboard')}>Cancel</button>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };
 

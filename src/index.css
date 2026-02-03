@@ -218,8 +218,11 @@ form,
 .btn-primary,
 .btn-secondary,
 .btn-danger {
+  padding: 14px 32px;
+  border-radius: 8px;
   border: none;
   font-weight: 600;
+  font-size: 1.125rem;
   cursor: pointer;
   transition: all 0.3s;
   display: inline-block;
@@ -228,12 +231,11 @@ form,
 .btn-primary {
   background: linear-gradient(135deg, #036d98 0%, #025a7a 100%);
   color: white;
-  padding: 14px 32px;  
-  font-size: 1.125rem;  
   box-shadow: 0 4px 6px rgba(3, 109, 152, 0.3);
 }
 
 .btn-primary:hover {
+  transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(3, 109, 152, 0.4);
   background: linear-gradient(135deg, #025a7a 0%, #036d98 100%);
 }
@@ -241,33 +243,31 @@ form,
 .btn-secondary {
   background: white;
   color: #036d98;
-  padding: 14px 32px;  
   border: 2px solid #036d98;
-  font-size: 1.125rem;  
 }
 
 .btn-secondary:hover {
   background: #036d98;
   color: white;
+  transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(3, 109, 152, 0.3);
 }
 
 .btn-danger {
   background-color: #a31835;
   color: white;
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-weight: 500;
-  transition: all 0.2s;
+  box-shadow: 0 4px 6px rgba(163, 24, 53, 0.3);
 }
 
 .btn-danger:hover {
   background-color: #8a1329;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(163, 24, 53, 0.4);
 }
 
 .btn-large {
-  padding: 18px 48px;
-  font-size: 1.25rem;
+  padding: 14px 32px;
+  font-size: 1.5rem;
   white-space: nowrap;
 }
 
@@ -701,6 +701,51 @@ td:nth-child(6) {
   margin: 24px 0 16px;
   color: #6b7280;
 }
+
+/* ===== STAFF ITEM DETAILS ===== */
+
+.detail-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.detail-card {
+  border: 3px solid #a31835;
+  border-left: 3px solid #a31835;
+  text-align: center;
+}
+
+.detail-card h2 {
+  color: #a31835;
+  font-size: 3rem;
+  margin-bottom: 32px;
+}
+
+.detail-card h3 {
+  color: #036d98;
+  margin-top: 24px;
+}
+
+.photo-grid {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.detail-card p {
+  font-size: 1.125rem;
+}
+
+.photo-grid img {
+  max-width: 300px;
+}
+
+.detail-card a {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
 
 /* ===== MOBILE RESPONSIVE ===== */
 @media (max-width: 768px) {

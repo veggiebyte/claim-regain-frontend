@@ -144,8 +144,11 @@ const StaffDashboard = () => {
                                             <div className="thumbnail no-photo">No photo</div>
                                         )}
                                     </td>
-                                    <td><strong>{item.title}</strong></td>
-                                    <td>{new Date(item.dateFound).toLocaleDateString()}</td>
+<td>
+  <Link to={`/staff/founditems/${item._id}`}>
+    <strong>{item.title}</strong>
+  </Link>
+</td>                                    <td>{new Date(item.dateFound).toLocaleDateString()}</td>
                                     <td>{item.category}</td>
                                     <td>{item.status}</td>
                                     <td>{item.claims ? item.claims.length : 0}</td>
