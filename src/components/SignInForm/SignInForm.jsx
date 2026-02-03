@@ -42,7 +42,7 @@ const SignInForm = () => {
         <div className="hero-content">
           <form autoComplete='off' onSubmit={handleSubmit}>
             <h2>Sign In</h2>
-            {message && <p style={{color: '#a31835', textAlign: 'center', marginTop: 0}}>{message}</p>}
+            {message && <p className="error-message">{message}</p>}
             
             <label htmlFor='username'>
               Username:

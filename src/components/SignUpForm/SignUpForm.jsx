@@ -50,7 +50,7 @@ const SignUpForm = () => {
         <div className="hero-content">
           <form onSubmit={handleSubmit}>
             <h2>Sign Up</h2>
-            {message && <p style={{color: '#a31835', textAlign: 'center', marginTop: 0}}>{message}</p>}
+            {message && <p className="error-message">{message}</p>}
             
             <label htmlFor='username'>
               Username:

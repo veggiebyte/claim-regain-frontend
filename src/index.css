@@ -348,6 +348,13 @@ form,
   box-shadow: 0 8px 24px rgba(0,0,0,0.15);
 }
 
+/* ===== SIGN IN AND SIGN OUT ===== */
+.error-message {
+  color: #a31835;
+  text-align: center;
+  margin-top: 0;
+}
+
 /* ===== CARDS ===== */
 .card {
   background: white;
