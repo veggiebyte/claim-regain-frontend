@@ -1,8 +1,6 @@
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router';
-
 import { signUp } from '../../services/authService';
-
 import { UserContext } from '../../contexts/UserContext';
 
 const SignUpForm = () => {
@@ -28,7 +26,11 @@ const SignUpForm = () => {
     try {
       const newUser = await signUp(formData);
       setUser(newUser);
-      navigate('/');
+      if (newUser.role === 'STAFF') {
+        navigate('/staff/dashboard');
+      } else {
+        navigate('/');
+      }
     } catch (err) {
       setMessage(err.message);
     }
@@ -39,63 +41,75 @@ const SignUpForm = () => {
   };
 
   return (
-    <main>
-      <h1>Sign Up</h1>
-      <p>{message}</p>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor='username'>Username:</label>
-          <input
-            type='text'
-            id='name'
-            value={username}
-            name='username'
-            onChange={handleChange}
-            required
-          />
+    <div className="page-content">
+      <div className="hero-container">
+        <div className="hero-image">
+          <img src="/images/lost_found.jpg" alt="Lost and Found Box" />
         </div>
-        <div>
-          <label htmlFor='password'>Password:</label>
-          <input
-            type='password'
-            id='password'
-            value={password}
-            name='password'
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor='confirm'>Confirm Password:</label>
-          <input
-            type='password'
-            id='confirm'
-            value={passwordConf}
-            name='passwordConf'
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor='role'>I am a:</label>
-          <select
-            id='role'
-            name='role'
-            value={role}
-            onChange={handleChange}
-            required
-          >
-            <option value='VISITOR'>Visitor (can claim items)</option>
-            <option value='STAFF'>Staff (can log found items)</option>
-          </select>
-        </div>
+        
+        <div className="hero-content">
+          <form onSubmit={handleSubmit}>
+            <h2>Sign Up</h2>
+            {message && <p style={{color: '#a31835', textAlign: 'center', marginTop: 0}}>{message}</p>}
+            
+            <label htmlFor='username'>
+              Username:
+              <input
+                type='text'
+                id='username'
+                value={username}
+                name='username'
+                onChange={handleChange}
+                required
+              />
+            </label>
 
-        <div>
-          <button disabled={isFormInvalid()}>Sign Up</button>
-          <button onClick={() => navigate('/')}>Cancel</button>
+            <label htmlFor='password'>
+              Password:
+              <input
+                type='password'
+                id='password'
+                value={password}
+                name='password'
+                onChange={handleChange}
+                required
+              />
+            </label>
+
+            <label htmlFor='passwordConf'>
+              Confirm Password:
+              <input
+                type='password'
+                id='passwordConf'
+                value={passwordConf}
+                name='passwordConf'
+                onChange={handleChange}
+                required
+              />
+            </label>
+
+            <label htmlFor='role'>
+              I am a:
+              <select
+                id='role'
+                name='role'
+                value={role}
+                onChange={handleChange}
+                required
+              >
+                <option value='VISITOR'>Visitor (can claim items)</option>
+                <option value='STAFF'>Staff (can log found items)</option>
+              </select>
+            </label>
+
+            <div className="cta-buttons">
+              <button type="submit" disabled={isFormInvalid()} className="btn-primary">Sign Up</button>
+              <button type="button" onClick={() => navigate('/')} className="btn-secondary">Cancel</button>
+            </div>
+          </form>
         </div>
-      </form>
-    </main>
+      </div>
+    </div>
   );
 };
 

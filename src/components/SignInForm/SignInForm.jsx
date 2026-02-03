@@ -36,7 +36,7 @@ const SignInForm = () => {
     <div className="page-content">
       <div className="hero-container">
         <div className="hero-image">
-          <img src="/images/lost_book.png" alt="Lost book" />
+          <img src="/images/lost_book.jpg" alt="Lost book" />
         </div>
         
         <div className="hero-content">
