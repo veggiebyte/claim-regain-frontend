@@ -1,8 +1,6 @@
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router';
-
 import { signIn } from '../../services/authService';
-
 import { UserContext } from '../../contexts/UserContext';
 
 const SignInForm = () => {
@@ -24,47 +22,62 @@ const SignInForm = () => {
     try {
       const signedInUser = await signIn(formData);
       setUser(signedInUser);
-      navigate('/');
+      if (signedInUser.role === 'STAFF') {
+        navigate('/staff/dashboard');
+      } else {
+        navigate('/');
+      }
     } catch (err) {
       setMessage(err.message);
     }
   };
 
   return (
-    <main>
-      <h1>Sign In</h1>
-      <p>{message}</p>
-      <form autoComplete='off' onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor='email'>Username:</label>
-          <input
-            type='text'
-            autoComplete='off'
-            id='username'
-            value={formData.username}
-            name='username'
-            onChange={handleChange}
-            required
-          />
+    <div className="page-content">
+      <div className="hero-container">
+        <div className="hero-image">
+          <img src="/images/lost_book.png" alt="Lost book" />
         </div>
-        <div>
-          <label htmlFor='password'>Password:</label>
-          <input
-            type='password'
-            autoComplete='off'
-            id='password'
-            value={formData.password}
-            name='password'
-            onChange={handleChange}
-            required
-          />
+        
+        <div className="hero-content">
+          <form autoComplete='off' onSubmit={handleSubmit}>
+            <h2>Sign In</h2>
+            {message && <p style={{color: '#a31835', textAlign: 'center', marginTop: 0}}>{message}</p>}
+            
+            <label htmlFor='username'>
+              Username:
+              <input
+                type='text'
+                autoComplete='off'
+                id='username'
+                value={formData.username}
+                name='username'
+                onChange={handleChange}
+                required
+              />
+            </label>
+
+            <label htmlFor='password'>
+              Password:
+              <input
+                type='password'
+                autoComplete='off'
+                id='password'
+                value={formData.password}
+                name='password'
+                onChange={handleChange}
+                required
+              />
+            </label>
+
+            <div className="cta-buttons">
+              <button type="submit" className="btn-primary">Sign In</button>
+              <button type="button" onClick={() => navigate('/')} className="btn-secondary">Cancel</button>
+            </div>
+          </form>
         </div>
-        <div>
-          <button>Sign In</button>
-          <button onClick={() => navigate('/')}>Cancel</button>
-        </div>
-      </form>
-    </main>
+      </div>
+    </div>
   );
 };
 
