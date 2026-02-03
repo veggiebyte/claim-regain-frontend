@@ -587,6 +587,40 @@ input[type="checkbox"] {
   transform: translateX(4px);
 }
 
+/* ===== STAFF DASHBOARD ===== */
+
+.thumbnail {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  background-color: #f0f0f0;
+  border: 1px solid #036d98;
+  border-radius: 4px;
+}
+
+.no-photo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e5e7eb;
+  color: #6b7280;
+  font-size: 0.75rem;
+}
+
+th:last-child {
+  text-align: center;
+}
+
+td:last-child {
+  white-space: nowrap;
+  text-align: center;  
+}
+
+th:nth-child(6),
+td:nth-child(6) {
+  text-align: center;
+}
+
 /* ===== MODAL ===== */
 .modal-overlay {
   position: fixed;
@@ -720,11 +754,16 @@ input[type="checkbox"] {
   
   th, td {
     padding: 12px 8px;
-    font-size: 0.875rem;
+    font-size: 1rem;
   }
   
   td strong {
     font-size: 1rem;
+  }
+
+    td:last-child {
+    white-space: normal;
+    line-height: 1.8;
   }
   
   .view-link {
