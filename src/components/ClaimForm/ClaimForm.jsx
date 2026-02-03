@@ -1,13 +1,27 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router';
+import * as foundItemService from '../../services/foundItemService';
 import * as claimService from '../../services/claimService';
 
-const ClaimForm = ({ foundItemId, verificationQuestions }) => {
+const ClaimForm = () => {
+  const { foundItemId } = useParams();
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    answers: verificationQuestions.map(q => ({ question: q.question, answer: '' })),
-    additionalDetails: '',
-  });
+  const [foundItem, setFoundItem] = useState(null);
+  const [formData, setFormData] = useState(null);
+
+  useEffect(() => {
+    const fetchItem = async () => {
+      const data = await foundItemService.show(foundItemId);
+      setFoundItem(data);
+      if (data.verificationQuestions && data.verificationQuestions.length > 0) {
+        setFormData({
+          answers: data.verificationQuestions.map(q => ({ question: q.question, answer: '' })),
+          additionalDetails: '',
+        });
+      }
+    };
+    fetchItem();
+  }, [foundItemId]);
 
   const handleAnswerChange = (index, value) => {
     const updatedAnswers = [...formData.answers];
@@ -25,38 +39,72 @@ const ClaimForm = ({ foundItemId, verificationQuestions }) => {
       };
       await claimService.create(claimData);
       alert('Claim submitted successfully! Staff will review your answers.');
-      navigate('/claims');
+      window.location.href = '/claims';
     } catch (error) {
       console.log(error);
+      alert('Error submitting claim. Please try again.');
     }
   };
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <h4>Verification Questions</h4>
-      {formData.answers.map((answer, index) => (
-        <div key={index}>
-          <label>{answer.question}</label>
-          <input
-            type="text"
-            value={answer.answer}
-            onChange={(e) => handleAnswerChange(index, e.target.value)}
-            required
-          />
-        </div>
-      ))}
-      
-      <label>
-        Additional Details:
-        <textarea
-          value={formData.additionalDetails}
-          onChange={(e) => setFormData({ ...formData, additionalDetails: e.target.value })}
-          placeholder="Any additional information about the item..."
-        />
-      </label>
+  if (!foundItem || !formData) return (
+    <div className="page-content">
+      <div className="card text-center">
+        <p>Loading...</p>
+      </div>
+    </div>
+  );
 
-      <button type="submit">Submit Claim</button>
-    </form>
+  if (!foundItem.verificationQuestions || foundItem.verificationQuestions.length === 0) {
+    return (
+      <div className="page-content">
+        <div className="card text-center">
+          <h2>No Verification Questions</h2>
+          <p>This item does not have verification questions set up.</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="page-content">
+      <form onSubmit={handleSubmit}>
+        <h2>File a Claim</h2>
+        
+        <div className="mb-20">
+          <h3>Item Details</h3>
+          <p><strong>Description:</strong> {foundItem.publicDescription}</p>
+          <p><strong>Category:</strong> {foundItem.category}</p>
+          <p><strong>Location Found:</strong> {foundItem.locationFound}</p>
+        </div>
+
+        <h3>Verification Questions</h3>
+        {formData.answers.map((answer, index) => (
+          <label key={index}>
+            {answer.question}
+            <input
+              type="text"
+              value={answer.answer}
+              onChange={(e) => handleAnswerChange(index, e.target.value)}
+              required
+            />
+          </label>
+        ))}
+        
+        <label>
+          Additional Details:
+          <textarea
+            value={formData.additionalDetails}
+            onChange={(e) => setFormData({ ...formData, additionalDetails: e.target.value })}
+            placeholder="Any additional information that proves this is your item..."
+          />
+        </label>
+
+        <div className="cta-buttons">
+          <button type="submit" className="btn-primary">Submit Claim</button>
+          <button type="button" onClick={() => navigate('/founditems')} className="btn-secondary">Cancel</button>
+        </div>
+      </form>
+    </div>
   );
 };
 

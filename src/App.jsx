@@ -1,4 +1,5 @@
 import { Routes, Route, useNavigate } from 'react-router';
+import { useContext, useState, useEffect } from 'react';
 import NavBar from './components/NavBar/NavBar';
 import SignUpForm from './components/SignUpForm/SignUpForm';
 import SignInForm from './components/SignInForm/SignInForm';
@@ -6,20 +7,18 @@ import Landing from './components/Landing/Landing';
 import FoundItemList from './components/FoundItemList/FoundItemList';
 import FoundItemDetails from './components/FoundItemDetails/FoundItemDetails';
 import FoundItemForm from './components/FoundItemForm/FoundItemForm';
+import FoundItemEditForm from './components/FoundItemForm/FoundItemEditForm';
 import ClaimList from './components/ClaimList/ClaimList';
-import * as foundItemService from './services/foundItemService';
-import * as claimService from './services/claimService';
+import ClaimForm from './components/ClaimForm/ClaimForm';
 import StaffDashboard from './components/StaffDashboard/StaffDashboard';
 import StaffItemDetails from './components/StaffDashboard/StaffItemDetails';
-import FoundItemEditForm from './components/FoundItemForm/FoundItemEditForm';
-import { useContext, useState, useEffect } from 'react';
-
+import * as foundItemService from './services/foundItemService';
+import * as claimService from './services/claimService';
 import { UserContext } from './contexts/UserContext';
 
 const App = () => {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
-
   const [foundItems, setFoundItems] = useState([]);
   const [claims, setClaims] = useState([]);
 
@@ -62,14 +61,11 @@ const App = () => {
       <NavBar />
       <Routes>
         <Route path='/' element={<Landing />} />
-
-        {/* Public routes - anyone can view found items */}
         <Route path='/founditems' element={<FoundItemList foundItems={foundItems} />} />
         <Route path='/founditems/:foundItemId' element={<FoundItemDetails />} />
 
         {user ? (
           <>
-            {/* STAFF only routes */}
             {user.role === 'STAFF' && (
               <>
                 <Route path='/staff/dashboard' element={<StaffDashboard />} />
@@ -78,16 +74,11 @@ const App = () => {
                 <Route path='/founditems/new' element={<FoundItemForm handleAddFoundItem={handleAddFoundItem} />} />
               </>
             )}
-
-            {/* Claims routes - all authenticated users */}
-            <Route
-              path='/claims'
-              element={<ClaimList claims={claims} userRole={user.role} />}
-            />
+            <Route path='/founditems/:foundItemId/claim' element={<ClaimForm />} />
+            <Route path='/claims' element={<ClaimList claims={claims} userRole={user.role} />} />
           </>
         ) : (
           <>
-            {/* Non-user routes (available only to guests) */}
             <Route path='/sign-up' element={<SignUpForm />} />
             <Route path='/sign-in' element={<SignInForm />} />
           </>

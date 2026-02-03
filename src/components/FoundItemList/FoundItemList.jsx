@@ -157,12 +157,24 @@ const FoundItemList = ({ foundItems }) => {
 
             {!user ? (
               <div>
-                <p>You need to <Link to="/sign-in" onClick={closeModal}>sign in</Link> or <Link to="/sign-up" onClick={closeModal}>sign up</Link> to file a claim.</p>
+                <p>You need to sign in or create an account to file a claim for this item.</p>
+                <div className="cta-buttons mt-20">
+                  <Link to="/sign-in" onClick={closeModal} className="btn-primary btn-large">
+                    Sign In
+                  </Link>
+                  <Link to="/sign-up" onClick={closeModal} className="btn-secondary btn-large">
+                    Sign Up
+                  </Link>
+                </div>
               </div>
             ) : (
               <div>
-                <h3>Is this yours?</h3>
-                <ClaimForm foundItemId={selectedItem._id} verificationQuestions={selectedItem.verificationQuestions} onSuccess={closeModal} />
+                <p>Think this is yours? Click below to file a claim and answer verification questions to help us confirm ownership.</p>
+                <div className="cta-buttons mt-20">
+                  <Link to={`/founditems/${selectedItem._id}/claim`} onClick={closeModal} className="btn-primary btn-large">
+                    File a Claim
+                  </Link>
+                </div>
               </div>
             )}
           </div>

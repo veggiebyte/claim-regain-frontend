@@ -240,6 +240,13 @@ form,
   background: linear-gradient(135deg, #025a7a 0%, #036d98 100%);
 }
 
+.modal-content .btn-primary:hover {
+  background: #a31835;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(163, 24, 53, 0.4);
+}
+
 .btn-secondary {
   background: white;
   color: #036d98;
@@ -657,17 +664,8 @@ td:nth-child(6) {
   position: relative;
   box-shadow: 0 20px 60px rgba(0,0,0,0.3);
   animation: slideUp 0.3s;
-  border-left: 4px solid #036d98;
-}
-
-.modal-content a {
-  color: #036d98;
-  text-decoration: underline;
-  font-weight: 600;
-}
-
-.modal-content a:hover {
-  color: #a31835;
+  border: 6px solid #a31835;
+  padding: 40px;
 }
 
 @keyframes slideUp {
@@ -701,12 +699,36 @@ td:nth-child(6) {
 
 .modal-content h2 {
   margin-bottom: 24px;
-  color: #1f2937;
+  color: #a31835;
+  font-weight: 700;
 }
 
 .modal-content p {
   margin: 24px 0 16px;
   color: #6b7280;
+}
+
+.modal-content a {
+  color: #036d98;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.modal-content a:hover {
+  color: #a31835;
+}
+
+.modal-content .btn-primary,
+.modal-content .btn-secondary {
+  text-decoration: none;
+}
+
+.modal-content .btn-primary {
+  color: white;
+}
+
+.modal-content .btn-secondary {
+  color: #036d98;
 }
 
 /* ===== STAFF ITEM DETAILS ===== */
@@ -718,7 +740,6 @@ td:nth-child(6) {
 
 .detail-card {
   border: 3px solid #a31835;
-  border-left: 3px solid #a31835;
   text-align: center;
 }
 
