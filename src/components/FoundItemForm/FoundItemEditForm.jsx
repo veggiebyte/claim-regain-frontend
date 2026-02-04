@@ -64,7 +64,7 @@ const FoundItemEditForm = () => {
     <div className="page-content">
       <form onSubmit={handleSubmit}>
         <h2>Edit Found Item</h2>
-        
+
         <label>
           Title (Staff Reference):
           <input
@@ -89,7 +89,8 @@ const FoundItemEditForm = () => {
             <option value="ELECTRONICS">Electronics</option>
             <option value="JEWELRY">Jewelry</option>
             <option value="BAG">Bag</option>
-            <option value="ACCESSORIES">Accessories</option>
+            <option value="DRINKWARE">Drinkware</option>
+            <option value="KEYS">Keys</option>
             <option value="OTHER">Other</option>
           </select>
         </label>
@@ -213,7 +214,7 @@ const FoundItemEditForm = () => {
             </label>
           </div>
         ))}
-        
+
         <button type="button" onClick={addQuestion} className="btn-secondary">
           Add Another Question
         </button>

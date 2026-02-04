@@ -85,7 +85,8 @@ const FoundItemForm = ({ handleAddFoundItem }) => {
                     <option value="ELECTRONICS">Electronics</option>
                     <option value="JEWELRY">Jewelry</option>
                     <option value="BAG">Bag</option>
-                    <option value="ACCESSORIES">Accessories</option>
+                    <option value="DRINKWARE">Drinkware</option>
+                    <option value="KEYS">Keys</option>
                     <option value="OTHER">Other</option>
                 </select>
             </label>
@@ -199,15 +200,15 @@ const FoundItemForm = ({ handleAddFoundItem }) => {
                     </label>
                 </div>
             ))}
-<div className="cta-buttons">
-  <button type="button" onClick={addQuestion} className="btn-secondary">
-    Add Another Question
-  </button>
+            <div className="cta-buttons">
+                <button type="button" onClick={addQuestion} className="btn-secondary">
+                    Add Another Question
+                </button>
 
-  <button type="submit" className="btn-primary">
-    Log Found Item
-  </button>
-</div>
+                <button type="submit" className="btn-primary">
+                    Log Found Item
+                </button>
+            </div>
         </form>
     );
 };
