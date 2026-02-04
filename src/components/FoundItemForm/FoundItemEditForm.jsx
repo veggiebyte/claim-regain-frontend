@@ -78,13 +78,20 @@ const FoundItemEditForm = () => {
 
         <label>
           Category:
-          <input
-            type="text"
+          <select
             name="category"
             value={formData.category}
             onChange={handleChange}
             required
-          />
+          >
+            <option value="">Select a category</option>
+            <option value="CLOTHING">Clothing</option>
+            <option value="ELECTRONICS">Electronics</option>
+            <option value="JEWELRY">Jewelry</option>
+            <option value="BAG">Bag</option>
+            <option value="ACCESSORIES">Accessories</option>
+            <option value="OTHER">Other</option>
+          </select>
         </label>
 
         <label>
