@@ -65,8 +65,10 @@ const FoundItemEditForm = () => {
       <form onSubmit={handleSubmit}>
         <h2>Edit Found Item</h2>
 
+        <p className="warning-text text-center">* indicates required field</p>
+        
         <label>
-          Title (Staff Reference):
+          Title (Staff Reference): *
           <input
             type="text"
             name="title"
@@ -77,7 +79,7 @@ const FoundItemEditForm = () => {
         </label>
 
         <label>
-          Category:
+          Category: *
           <select
             name="category"
             value={formData.category}
@@ -106,7 +108,7 @@ const FoundItemEditForm = () => {
         </label>
 
         <label>
-          Public Description (Vague):
+          Public Description (Vague): *
           <textarea
             name="publicDescription"
             value={formData.publicDescription}
@@ -127,7 +129,7 @@ const FoundItemEditForm = () => {
         </label>
 
         <label>
-          Date Found:
+          Date Found: *
           <input
             type="date"
             name="dateFound"
@@ -138,7 +140,7 @@ const FoundItemEditForm = () => {
         </label>
 
         <label>
-          Location Found:
+          Location Found: *
           <input
             type="text"
             name="locationFound"
@@ -149,24 +151,26 @@ const FoundItemEditForm = () => {
         </label>
 
         <label>
-          Storage Location:
+          Storage Location: *
           <input
             type="text"
             name="storageLocation"
             value={formData.storageLocation || ''}
             onChange={handleChange}
+            required
           />
         </label>
 
-        <h3>Item Photos (Staff Only - optional)</h3>
+        <h3>Item Photos (Staff Only - at least one required)</h3>
         {formData.imageUrls && formData.imageUrls.map((url, index) => (
           <label key={index}>
-            Image URL {index + 1}:
+            Image URL {index + 1}: {index === 0 && '*'}
             <input
               type="text"
               value={url || ''}
               onChange={(e) => handleImageChange(index, e.target.value)}
               placeholder="https://example.com/image.jpg"
+              required={index === 0}
             />
           </label>
         ))}
@@ -191,30 +195,32 @@ const FoundItemEditForm = () => {
           </select>
         </label>
 
-        <h3>Verification Questions</h3>
+        <h3>Verification Questions (at least two required)</h3>
         {formData.verificationQuestions && formData.verificationQuestions.map((q, index) => (
           <div key={index}>
             <label>
-              Question {index + 1}:
+              Question {index + 1}: *
               <input
                 type="text"
                 value={q.question}
                 onChange={(e) => handleQuestionChange(index, 'question', e.target.value)}
                 placeholder="e.g., What brand is the item?"
+                required
               />
             </label>
             <label>
-              Answer:
+              Answer: *
               <input
                 type="text"
                 value={q.answer}
                 onChange={(e) => handleQuestionChange(index, 'answer', e.target.value)}
                 placeholder="Correct answer"
+                required
               />
             </label>
           </div>
         ))}
-
+        
         <button type="button" onClick={addQuestion} className="btn-secondary">
           Add Another Question
         </button>

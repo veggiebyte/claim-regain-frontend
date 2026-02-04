@@ -61,8 +61,10 @@ const FoundItemForm = ({ handleAddFoundItem }) => {
         <form onSubmit={handleSubmit}>
             <h2>Log New Found Item</h2>
 
+            <p className="warning-text text-center">* indicates required field</p>
+
             <label>
-                Title:
+                Title: *
                 <input
                     type="text"
                     name="title"
@@ -73,7 +75,7 @@ const FoundItemForm = ({ handleAddFoundItem }) => {
             </label>
 
             <label>
-                Category:
+                Category: *
                 <select
                     name="category"
                     value={formData.category}
@@ -102,7 +104,7 @@ const FoundItemForm = ({ handleAddFoundItem }) => {
             </label>
 
             <label>
-                Public Description:
+                Public Description: *
                 <textarea
                     name="publicDescription"
                     value={formData.publicDescription}
@@ -123,7 +125,7 @@ const FoundItemForm = ({ handleAddFoundItem }) => {
             </label>
 
             <label>
-                Date Found:
+                Date Found: *
                 <input
                     type="date"
                     name="dateFound"
@@ -134,7 +136,7 @@ const FoundItemForm = ({ handleAddFoundItem }) => {
             </label>
 
             <label>
-                Location Found:
+                Location Found: *
                 <input
                     type="text"
                     name="locationFound"
@@ -145,24 +147,26 @@ const FoundItemForm = ({ handleAddFoundItem }) => {
             </label>
 
             <label>
-                Storage Location:
+                Storage Location: *
                 <input
                     type="text"
                     name="storageLocation"
                     value={formData.storageLocation}
                     onChange={handleChange}
+                    required
                 />
             </label>
 
-            <h3>Item Photos (Staff Only - optional)</h3>
+            <h3>Item Photos (Staff Only - at least one required)</h3>
             {formData.imageUrls.map((url, index) => (
                 <label key={index}>
-                    Image URL {index + 1}:
+                    Image URL {index + 1}: {index === 0 && '*'}
                     <input
                         type="text"
                         value={url}
                         onChange={(e) => handleImageChange(index, e.target.value)}
                         placeholder="https://example.com/image.jpg"
+                        required={index === 0}
                     />
                 </label>
             ))}
@@ -177,39 +181,45 @@ const FoundItemForm = ({ handleAddFoundItem }) => {
                 />
             </label>
 
-            <h3>Verification Questions</h3>
-            {formData.verificationQuestions.map((q, index) => (
-                <div key={index}>
-                    <label>
-                        Question {index + 1}:
-                        <input
-                            type="text"
-                            value={q.question}
-                            onChange={(e) => handleQuestionChange(index, 'question', e.target.value)}
-                            placeholder="e.g., What brand is the item?"
-                        />
-                    </label>
-                    <label>
-                        Answer:
-                        <input
-                            type="text"
-                            value={q.answer}
-                            onChange={(e) => handleQuestionChange(index, 'answer', e.target.value)}
-                            placeholder="Correct answer"
-                        />
-                    </label>
-                </div>
-            ))}
-            <div className="cta-buttons">
-                <button type="button" onClick={addQuestion} className="btn-secondary">
-                    Add Another Question
-                </button>
+          <h3>Verification Questions (at least two required)</h3>
+        {formData.verificationQuestions.map((q, index) => (
+          <div key={index}>
+            <label>
+              Question {index + 1}: *
+              <input
+                type="text"
+                value={q.question}
+                onChange={(e) => handleQuestionChange(index, 'question', e.target.value)}
+                placeholder="e.g., What brand is the item?"
+                required
+              />
+            </label>
+            <label>
+              Answer: *
+              <input
+                type="text"
+                value={q.answer}
+                onChange={(e) => handleQuestionChange(index, 'answer', e.target.value)}
+                placeholder="Correct answer"
+                required
+              />
+            </label>
+          </div>
+        ))}
 
-                <button type="submit" className="btn-primary">
-                    Log Found Item
-                </button>
-            </div>
-        </form>
+        <button type="button" onClick={addQuestion} className="btn-secondary">
+          Add Another Question
+        </button>
+
+        <div className="cta-buttons">
+          <button type="submit" className="btn-primary">
+            Log Found Item
+          </button>
+          <button type="button" onClick={() => navigate('/staff/dashboard')} className="btn-secondary">
+            Cancel
+          </button>
+        </div>
+      </form>
     );
 };
 
