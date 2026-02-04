@@ -43,6 +43,23 @@ const show = async (claimId) => {
   }
 };
 
+const update = async (claimId, claimFormData) => {
+  try {
+    const res = await fetch(`${BASE_URL}/${claimId}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(claimFormData),
+    });
+    return res.json();
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 const reviewClaim = async (claimId, reviewData) => {
   try {
     const res = await fetch(`${BASE_URL}/${claimId}/review`, {
@@ -89,4 +106,4 @@ const deleteClaim = async (claimId) => {
   }
 };
 
-export { create, index, show, reviewClaim, markPickupComplete, deleteClaim };
+export { create, index, show, update, reviewClaim, markPickupComplete, deleteClaim };

@@ -1,29 +1,47 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router';
+import { useParams, useNavigate, useSearchParams } from 'react-router';
 import * as foundItemService from '../../services/foundItemService';
 import * as claimService from '../../services/claimService';
 
 const ClaimForm = () => {
   const { foundItemId } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const editClaimId = searchParams.get('edit'); // Get claim ID from query params
   const [foundItem, setFoundItem] = useState(null);
   const [formData, setFormData] = useState(null);
+  const [isEditMode, setIsEditMode] = useState(false);
 
   useEffect(() => {
-    const fetchItem = async () => {
-      const data = await foundItemService.show(foundItemId);
-      setFoundItem(data);
-      if (data.verificationQuestions && data.verificationQuestions.length > 0) {
+    const fetchData = async () => {
+      // Always fetch the item
+      const itemData = await foundItemService.show(foundItemId);
+      setFoundItem(itemData);
+
+      // If edit mode, fetch existing claim
+      if (editClaimId) {
+        const claimData = await claimService.show(editClaimId);
+        setIsEditMode(true);
         setFormData({
-          answers: data.verificationQuestions.map(q => ({ question: q.question, answer: '' })),
-          additionalDetails: '',
-          contactEmail: '',
-          contactPhone: ''
+          answers: claimData.answers || [],
+          additionalDetails: claimData.additionalDetails || '',
+          contactEmail: claimData.contactEmail || '',
+          contactPhone: claimData.contactPhone || ''
         });
+      } else {
+        // New claim mode
+        if (itemData.verificationQuestions && itemData.verificationQuestions.length > 0) {
+          setFormData({
+            answers: itemData.verificationQuestions.map(q => ({ question: q.question, answer: '' })),
+            additionalDetails: '',
+            contactEmail: '',
+            contactPhone: ''
+          });
+        }
       }
     };
-    fetchItem();
-  }, [foundItemId]);
+    fetchData();
+  }, [foundItemId, editClaimId]);
 
   const handleAnswerChange = (index, value) => {
     const updatedAnswers = [...formData.answers];
@@ -41,12 +59,21 @@ const ClaimForm = () => {
         contactEmail: formData.contactEmail,
         contactPhone: formData.contactPhone
       };
-      await claimService.create(claimData);
-      alert('Claim submitted successfully! Staff will review your answers.');
+
+      if (isEditMode) {
+        // Update existing claim
+        await claimService.update(editClaimId, claimData);
+        alert('Claim updated successfully!');
+      } else {
+        // Create new claim
+        await claimService.create(claimData);
+        alert('Claim submitted successfully! Staff will review your answers.');
+      }
+      
       window.location.href = '/claims';
     } catch (error) {
       console.log(error);
-      alert('Error submitting claim. Please try again.');
+      alert(`Error ${isEditMode ? 'updating' : 'submitting'} claim. Please try again.`);
     }
   };
 
@@ -72,19 +99,21 @@ const ClaimForm = () => {
   return (
     <div className="page-content">
       <form onSubmit={handleSubmit}>
-        <h2>File a Claim</h2>
+        <h2>{isEditMode ? 'Edit Your Claim' : 'File a Claim'}</h2>
 
         <div className="mb-20">
           <h3>Item Details</h3>
-          <p><strong>Description:</strong> {foundItem.publicDescription}</p>
-          <p><strong>Category:</strong> {foundItem.category}</p>
-          <p><strong>Location Found:</strong> {foundItem.locationFound}</p>
+          <p><span className="label">Description:</span> {foundItem.publicDescription}</p>
+          <p><span className="label">Category:</span> {foundItem.category}</p>
+          <p><span className="label">Location Found:</span> {foundItem.locationFound}</p>
         </div>
+
+        <p className="warning-text text-center">* indicates required field</p>
 
         <h3>Verification Questions</h3>
         {formData.answers.map((answer, index) => (
           <label key={index}>
-            {answer.question}
+            {answer.question} *
             <input
               type="text"
               value={answer.answer}
@@ -95,7 +124,7 @@ const ClaimForm = () => {
         ))}
 
         <label>
-          Contact Email:
+          Contact Email: *
           <input
             type="email"
             value={formData.contactEmail}
@@ -105,7 +134,7 @@ const ClaimForm = () => {
         </label>
 
         <label>
-          Contact Phone:
+          Contact Phone: *
           <input
             type="text"
             value={formData.contactPhone}
@@ -115,7 +144,7 @@ const ClaimForm = () => {
         </label>
 
         <label>
-          Additional Details:
+          Additional Details (optional):
           <textarea
             value={formData.additionalDetails}
             onChange={(e) => setFormData({ ...formData, additionalDetails: e.target.value })}
@@ -124,8 +153,12 @@ const ClaimForm = () => {
         </label>
 
         <div className="cta-buttons">
-          <button type="submit" className="btn-primary">Submit Claim</button>
-          <button type="button" onClick={() => navigate('/founditems')} className="btn-secondary">Cancel</button>
+          <button type="submit" className="btn-primary">
+            {isEditMode ? 'Update Claim' : 'Submit Claim'}
+          </button>
+          <button type="button" onClick={() => navigate(isEditMode ? '/claims' : '/founditems')} className="btn-secondary">
+            Cancel
+          </button>
         </div>
       </form>
     </div>

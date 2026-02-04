@@ -447,6 +447,12 @@ td a:hover {
   text-decoration: underline;
 }
 
+td.item-name {
+  font-weight: 600;
+  font-size: 1.125rem;
+  color: var(--text);
+}
+
 /* ==============================
    FORMS
 ============================== */
@@ -507,6 +513,11 @@ input[type="checkbox"] {
   width: 20px;
   height: 20px;
   cursor: pointer;
+}
+
+.warning-text {
+  color: var(--red);
+  font-weight: 600;
 }
 
 /* ==============================
@@ -743,6 +754,71 @@ input[type="checkbox"] {
 .label {
   font-weight: 600;
   color: var(--text);
+}
+
+/* ==============================
+   STATUS BANNERS
+============================== */
+
+.status-banner {
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.status-banner.approved {
+  background-color: #d4edda;
+  border: 2px solid #28a745;
+  color: #155724;
+}
+
+.status-banner.denied {
+  background-color: #f8d7da;
+  border: 2px solid #dc3545;
+  color: #721c24;
+}
+
+.status-banner.pending {
+  background-color: #fff3cd;
+  border: 2px solid #ffc107;
+  color: #856404;
+}
+
+.status-badge {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.status-badge.pending {
+  background-color: #ffc107;
+  color: #856404;
+}
+
+.status-badge.approved {
+  background-color: #28a745;
+  color: white;
+}
+
+.status-badge.denied {
+  background-color: #dc3545;
+  color: white;
+}
+
+.pickup-instructions {
+  background-color: #e7f3ff;
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #007bff;
+}
+
+.denial-reason {
+  background-color: #fff5f5;
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #dc3545;
 }
 
 /* ==============================

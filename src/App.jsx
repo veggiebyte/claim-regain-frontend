@@ -16,6 +16,7 @@ import * as foundItemService from './services/foundItemService';
 import * as claimService from './services/claimService';
 import { UserContext } from './contexts/UserContext';
 import ClaimReview from './components/ClaimList/ClaimReview';
+import VisitorClaimView from './components/ClaimList/VisitorClaimView'; // NEW COMPONENT
 
 
 const App = () => {
@@ -74,11 +75,20 @@ const App = () => {
                 <Route path='/staff/founditems/:foundItemId' element={<StaffItemDetails />} />
                 <Route path='/staff/founditems/:foundItemId/edit' element={<FoundItemEditForm />} />
                 <Route path='/founditems/new' element={<FoundItemForm handleAddFoundItem={handleAddFoundItem} />} />
+                {/* STAFF ONLY - Review/Approve/Deny claims */}
+                <Route path='/claims/:claimId' element={<ClaimReview />} />
               </>
             )}
+            
+            {user.role === 'VISITOR' && (
+              <>
+                {/* VISITOR ONLY - View their own claim details */}
+                <Route path='/claims/:claimId' element={<VisitorClaimView />} />
+              </>
+            )}
+
             <Route path='/founditems/:foundItemId/claim' element={<ClaimForm />} />
             <Route path='/claims' element={<ClaimList claims={claims} userRole={user.role} />} />
-            <Route path='/claims/:claimId' element={<ClaimReview />} />
           </>
         ) : (
           <>
