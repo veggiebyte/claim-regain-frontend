@@ -3,15 +3,26 @@ import { useState, useContext, useEffect } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import Modal from '../Modal/Modal';
 import * as claimService from '../../services/claimService';
+import * as foundItemService from '../../services/foundItemService';
 
-const FoundItemList = ({ foundItems }) => {
+const FoundItemList = () => {
   const { user } = useContext(UserContext);
+  const [foundItems, setFoundItems] = useState([]);
   const [sortBy, setSortBy] = useState('dateFound');
   const [sortOrder, setSortOrder] = useState('desc');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedItem, setSelectedItem] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userClaims, setUserClaims] = useState([]);
+
+  // Fetch found items
+  useEffect(() => {
+    const fetchFoundItems = async () => {
+      const data = await foundItemService.index();
+      setFoundItems(data);
+    };
+    fetchFoundItems();
+  }, []);
 
   // Fetch user's claims if logged in
   useEffect(() => {
@@ -68,7 +79,7 @@ const FoundItemList = ({ foundItems }) => {
     setSelectedItem(null);
   };
 
-// Filter: show FOUND and CLAIMED items, hide DONATED and DISPOSED
+  // Filter: show FOUND and CLAIMED items, hide DONATED and DISPOSED
   const filteredItems = foundItems.filter(item => {
     // Show FOUND and CLAIMED items (staff will handle hiding picked-up items from backend)
     // Hide DONATED and DISPOSED

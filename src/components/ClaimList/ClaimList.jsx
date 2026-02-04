@@ -1,10 +1,24 @@
 import { Link } from 'react-router';
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { UserContext } from '../../contexts/UserContext';
+import * as claimService from '../../services/claimService';
 
-const ClaimList = ({ claims, userRole }) => {
+const ClaimList = () => {
+  const { user } = useContext(UserContext);
+  const [claims, setClaims] = useState([]);
   const [sortBy, setSortBy] = useState('createdAt');
   const [sortOrder, setSortOrder] = useState('desc');
   const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    const fetchClaims = async () => {
+      if (user) {
+        const data = await claimService.index();
+        setClaims(data);
+      }
+    };
+    fetchClaims();
+  }, [user]);
 
   const handleSort = (field) => {
     if (sortBy === field) {
@@ -20,7 +34,7 @@ const ClaimList = ({ claims, userRole }) => {
 
   // Action label displayed in Actions column
   const getActionLabel = (claim) => {
-    if (userRole === 'STAFF') {
+    if (user.role === 'STAFF') {
       return claim.status === 'PENDING' ? 'Review' : 'View/Edit';
     }
     // Visitor labels
@@ -48,10 +62,10 @@ const ClaimList = ({ claims, userRole }) => {
             <div className="browse-title-text">
               <div className="browse-title">
                 <div className="browse-icon">📋</div>
-                <h1>{userRole === 'STAFF' ? 'Review Claims' : 'My Claims'}</h1>
+                <h1>{user.role === 'STAFF' ? 'Review Claims' : 'My Claims'}</h1>
               </div>
               <p>
-                {userRole === 'STAFF'
+                {user.role === 'STAFF'
                   ? 'Review and manage all submitted claims. Verify answers and approve or deny claims.'
                   : "Below are claims you've submitted. Check the status to see if your claim was approved."}
               </p>
@@ -61,8 +75,8 @@ const ClaimList = ({ claims, userRole }) => {
 
         <div className="card text-center">
           <h2>No Claims Found</h2>
-          <p>{userRole === 'STAFF' ? 'No claims have been submitted yet.' : "You haven't submitted any claims yet."}</p>
-          {userRole !== 'STAFF' && (
+          <p>{user.role === 'STAFF' ? 'No claims have been submitted yet.' : "You haven't submitted any claims yet."}</p>
+          {user.role !== 'STAFF' && (
             <Link to="/founditems" className="btn-primary btn-large">
               Browse Found Items
             </Link>
@@ -137,10 +151,10 @@ const ClaimList = ({ claims, userRole }) => {
           <div className="browse-title-text">
             <div className="browse-title">
               <div className="browse-icon">📋</div>
-              <h1>{userRole === 'STAFF' ? 'Review Claims' : 'My Claims'}</h1>
+              <h1>{user.role === 'STAFF' ? 'Review Claims' : 'My Claims'}</h1>
             </div>
             <p>
-              {userRole === 'STAFF'
+              {user.role === 'STAFF'
                 ? 'Review and manage all submitted claims. Verify answers and approve or deny claims. Use the search below to find a specific claim by item name or claimant.'
                 : "Below are claims you've submitted. Check the status to see if your claim was approved."}
             </p>
@@ -166,7 +180,7 @@ const ClaimList = ({ claims, userRole }) => {
                 Item {sortBy === 'item' && (sortOrder === 'asc' ? '↑' : '↓')}
               </th>
 
-              {userRole === 'STAFF' && (
+              {user.role === 'STAFF' && (
                 <th onClick={() => handleSort('claimant')} className="sortable">
                   Claimant {sortBy === 'claimant' && (sortOrder === 'asc' ? '↑' : '↓')}
                 </th>
@@ -194,7 +208,7 @@ const ClaimList = ({ claims, userRole }) => {
                   {claim.itemId?.publicDescription || claim.itemId?.title || 'Unknown Item'}
                 </td>
 
-                {userRole === 'STAFF' && <td>{claim.claimantId?.username}</td>}
+                {user.role === 'STAFF' && <td>{claim.claimantId?.username}</td>}
 
                 <td>{new Date(claim.createdAt).toLocaleDateString()}</td>
                 <td>{claim.status}</td>
