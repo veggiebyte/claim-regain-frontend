@@ -15,6 +15,8 @@ import StaffItemDetails from './components/StaffDashboard/StaffItemDetails';
 import * as foundItemService from './services/foundItemService';
 import * as claimService from './services/claimService';
 import { UserContext } from './contexts/UserContext';
+import ClaimReview from './components/ClaimList/ClaimReview';
+
 
 const App = () => {
   const { user } = useContext(UserContext);
@@ -76,6 +78,7 @@ const App = () => {
             )}
             <Route path='/founditems/:foundItemId/claim' element={<ClaimForm />} />
             <Route path='/claims' element={<ClaimList claims={claims} userRole={user.role} />} />
+            <Route path='/claims/:claimId' element={<ClaimReview />} />
           </>
         ) : (
           <>

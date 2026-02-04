@@ -74,7 +74,7 @@ const StaffDashboard = () => {
     return (
         <div className="page-content">
             <div className="browse-header">
-                <div className="browse-title-container">
+<div className="browse-title-container small-image">
                     <div className="browse-image">
                         <img src="/images/lose_my_head.png" alt="Losing my head" />
                     </div>
@@ -84,11 +84,11 @@ const StaffDashboard = () => {
                             <h1>Staff Dashboard</h1>
                         </div>
                         <p>Manage all found items, review claims, update item status, and add new items. Use the search to quickly find specific items.</p>
-                        
+
                         <div className="search-bar">
-                            <input 
-                                type="text" 
-                                placeholder="🔍 Search items, category, or status..." 
+                            <input
+                                type="text"
+                                placeholder="🔍 Search items, category, or status..."
                                 className="search-input"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -109,7 +109,7 @@ const StaffDashboard = () => {
                     <p>No items found.</p>
                 </div>
             ) : (
-                <div className="table-container">
+                <div className="table-container actions-table">
                     <table>
                         <thead>
                             <tr>
@@ -118,7 +118,7 @@ const StaffDashboard = () => {
                                     Item {sortBy === 'item' && (sortOrder === 'asc' ? '↑' : '↓')}
                                 </th>
                                 <th onClick={() => handleSort('dateFound')} className="sortable">
-                                    Date<br/>Found {sortBy === 'dateFound' && (sortOrder === 'asc' ? '↑' : '↓')}
+                                    Date<br />Found {sortBy === 'dateFound' && (sortOrder === 'asc' ? '↑' : '↓')}
                                 </th>
                                 <th onClick={() => handleSort('category')} className="sortable">
                                     Category {sortBy === 'category' && (sortOrder === 'asc' ? '↑' : '↓')}
@@ -135,20 +135,20 @@ const StaffDashboard = () => {
                                 <tr key={item._id}>
                                     <td>
                                         {item.imageUrls && item.imageUrls[0] ? (
-                                            <img 
-                                                src={item.imageUrls[0]} 
-                                                alt={item.title} 
+                                            <img
+                                                src={item.imageUrls[0]}
+                                                alt={item.title}
                                                 className="thumbnail"
                                             />
                                         ) : (
                                             <div className="thumbnail no-photo">No photo</div>
                                         )}
                                     </td>
-<td>
-  <Link to={`/staff/founditems/${item._id}`}>
-    <strong>{item.title}</strong>
-  </Link>
-</td>                                    <td>{new Date(item.dateFound).toLocaleDateString()}</td>
+                                    <td>
+                                        <Link to={`/staff/founditems/${item._id}`}>
+                                            <strong>{item.title}</strong>
+                                        </Link>
+                                    </td>                                    <td>{new Date(item.dateFound).toLocaleDateString()}</td>
                                     <td>{item.category}</td>
                                     <td>{item.status}</td>
                                     <td>{item.claims ? item.claims.length : 0}</td>
@@ -162,7 +162,7 @@ const StaffDashboard = () => {
                                 </tr>
                             ))}
                         </tbody>
-                        </table>
+                    </table>
                 </div>
             )}
         </div>

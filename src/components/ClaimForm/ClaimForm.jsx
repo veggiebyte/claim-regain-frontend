@@ -17,6 +17,8 @@ const ClaimForm = () => {
         setFormData({
           answers: data.verificationQuestions.map(q => ({ question: q.question, answer: '' })),
           additionalDetails: '',
+          contactEmail: '',
+          contactPhone: ''
         });
       }
     };
@@ -36,6 +38,8 @@ const ClaimForm = () => {
         itemId: foundItemId,
         answers: formData.answers,
         additionalDetails: formData.additionalDetails,
+        contactEmail: formData.contactEmail,
+        contactPhone: formData.contactPhone
       };
       await claimService.create(claimData);
       alert('Claim submitted successfully! Staff will review your answers.');
@@ -69,7 +73,7 @@ const ClaimForm = () => {
     <div className="page-content">
       <form onSubmit={handleSubmit}>
         <h2>File a Claim</h2>
-        
+
         <div className="mb-20">
           <h3>Item Details</h3>
           <p><strong>Description:</strong> {foundItem.publicDescription}</p>
@@ -89,7 +93,27 @@ const ClaimForm = () => {
             />
           </label>
         ))}
-        
+
+        <label>
+          Contact Email:
+          <input
+            type="email"
+            value={formData.contactEmail}
+            onChange={(e) => setFormData({ ...formData, contactEmail: e.target.value })}
+            required
+          />
+        </label>
+
+        <label>
+          Contact Phone:
+          <input
+            type="text"
+            value={formData.contactPhone}
+            onChange={(e) => setFormData({ ...formData, contactPhone: e.target.value })}
+            required
+          />
+        </label>
+
         <label>
           Additional Details:
           <textarea

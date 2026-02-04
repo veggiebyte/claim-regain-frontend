@@ -2,7 +2,6 @@ import { Link } from 'react-router';
 import { useState, useContext } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import Modal from '../Modal/Modal';
-import ClaimForm from '../ClaimForm/ClaimForm';
 
 const FoundItemList = ({ foundItems }) => {
   const { user } = useContext(UserContext);
@@ -85,7 +84,7 @@ const FoundItemList = ({ foundItems }) => {
   return (
     <div className="page-content">
       <div className="browse-header">
-        <div className="browse-title-container">
+        <div className="browse-title-container small-image">
           <div className="browse-image">
             <img src="/images/wheres_my_stuff.png" alt="Where's my stuff" />
           </div>
@@ -109,41 +108,41 @@ const FoundItemList = ({ foundItems }) => {
         </div>
       </div>
 
-      <div className="table-container">
+      <div className="table-container actions-table">        
         <table>
-          <thead>
-            <tr>
-              <th onClick={() => handleSort('item')} className="sortable">
-                Found Item {sortBy === 'item' && (sortOrder === 'asc' ? '↑' : '↓')}
-              </th>
-              <th onClick={() => handleSort('dateFound')} className="sortable">
-                Date Found {sortBy === 'dateFound' && (sortOrder === 'asc' ? '↑' : '↓')}
-              </th>
-              <th onClick={() => handleSort('category')} className="sortable">
-                Category {sortBy === 'category' && (sortOrder === 'asc' ? '↑' : '↓')}
-              </th>
-              <th onClick={() => handleSort('location')} className="sortable">
-                Location {sortBy === 'location' && (sortOrder === 'asc' ? '↑' : '↓')}
-              </th>
-              <th></th>
+        <thead>
+          <tr>
+            <th onClick={() => handleSort('item')} className="sortable">
+              Found Item {sortBy === 'item' && (sortOrder === 'asc' ? '↑' : '↓')}
+            </th>
+            <th onClick={() => handleSort('dateFound')} className="sortable">
+              Date Found {sortBy === 'dateFound' && (sortOrder === 'asc' ? '↑' : '↓')}
+            </th>
+            <th onClick={() => handleSort('category')} className="sortable">
+              Category {sortBy === 'category' && (sortOrder === 'asc' ? '↑' : '↓')}
+            </th>
+            <th onClick={() => handleSort('location')} className="sortable">
+              Location {sortBy === 'location' && (sortOrder === 'asc' ? '↑' : '↓')}
+            </th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {sortedItems.map((item) => (
+            <tr key={item._id}>
+              <td><strong>{item.publicDescription}</strong></td>
+              <td>{new Date(item.dateFound).toLocaleDateString()}</td>
+              <td>{item.category}</td>
+              <td>{item.locationFound}</td>
+              <td>
+                <button onClick={() => handleViewClaim(item)} className="view-link">
+                  View/Claim →
+                </button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {sortedItems.map((item) => (
-              <tr key={item._id}>
-                <td><strong>{item.publicDescription}</strong></td>
-                <td>{new Date(item.dateFound).toLocaleDateString()}</td>
-                <td>{item.category}</td>
-                <td>{item.locationFound}</td>
-                <td>
-                  <button onClick={() => handleViewClaim(item)} className="view-link">
-                    View/Claim →
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          ))}
+        </tbody>
+      </table>
       </div>
 
       <Modal isOpen={isModalOpen} onClose={closeModal}>
