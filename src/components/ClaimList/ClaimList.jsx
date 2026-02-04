@@ -118,48 +118,50 @@ const ClaimList = ({ claims, userRole }) => {
         </div>
       </div>
 
-      <div className="table-container actions-table">
-        <table>
-          <thead>
-            <tr>
-              <th onClick={() => handleSort('item')} className="sortable">
-                Item {sortBy === 'item' && (sortOrder === 'asc' ? '↑' : '↓')}
-              </th>
-              {userRole === 'STAFF' && (
-                <th onClick={() => handleSort('claimant')} className="sortable">
-                  Claimant {sortBy === 'claimant' && (sortOrder === 'asc' ? '↑' : '↓')}
-                </th>
-              )}
-              <th onClick={() => handleSort('status')} className="sortable">
-                Status {sortBy === 'status' && (sortOrder === 'asc' ? '↑' : '↓')}
-              </th>
-              <th onClick={() => handleSort('createdAt')} className="sortable">
-                Submitted {sortBy === 'createdAt' && (sortOrder === 'asc' ? '↑' : '↓')}
-              </th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {sortedClaims.map((claim) => (
-              <tr key={claim._id}>
-                <td>{claim.itemId?.publicDescription || claim.itemId?.title || 'Unknown Item'}</td>
-                {userRole === 'STAFF' && (
-                  <td>{claim.claimantId?.username}</td>
-                )}
-                <td>{claim.status}</td>
-                <td>{new Date(claim.createdAt).toLocaleDateString()}</td>
-                <td>
-                  {userRole === 'STAFF' ? (
-                    <Link to={`/claims/${claim._id}`}>Review</Link>
-                  ) : (
-                    <span>{claim.status === 'PENDING' ? 'Pending review' : claim.status}</span>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+<div className="table-container actions-table">
+  <table>
+    <thead>
+      <tr>
+        <th onClick={() => handleSort('item')} className="sortable">
+          Item {sortBy === 'item' && (sortOrder === 'asc' ? '↑' : '↓')}
+        </th>
+        {userRole === 'STAFF' && (
+          <th onClick={() => handleSort('claimant')} className="sortable">
+            Claimant {sortBy === 'claimant' && (sortOrder === 'asc' ? '↑' : '↓')}
+          </th>
+        )}
+        <th onClick={() => handleSort('createdAt')} className="sortable">
+          Submitted {sortBy === 'createdAt' && (sortOrder === 'asc' ? '↑' : '↓')}
+        </th>
+        <th onClick={() => handleSort('status')} className="sortable">
+          Status {sortBy === 'status' && (sortOrder === 'asc' ? '↑' : '↓')}
+        </th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {sortedClaims.map((claim) => (
+        <tr key={claim._id}>
+          <td>{claim.itemId?.publicDescription || claim.itemId?.title || 'Unknown Item'}</td>
+          {userRole === 'STAFF' && (
+            <td>{claim.claimantId?.username}</td>
+          )}
+          <td>{new Date(claim.createdAt).toLocaleDateString()}</td>
+          <td>{claim.status}</td>
+          <td>
+            {userRole === 'STAFF' ? (
+              <Link to={`/claims/${claim._id}`}>
+                {claim.status === 'PENDING' ? 'Review' : 'View/Edit'}
+              </Link>
+            ) : (
+              <span>{claim.status === 'PENDING' ? 'Pending review' : claim.status}</span>
+            )}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
     </div>
   );
 };
