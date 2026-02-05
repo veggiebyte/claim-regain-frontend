@@ -193,7 +193,6 @@ const FoundItemList = () => {
           <div>
             <h2>{selectedItem.publicDescription}</h2>
             <p><span className="label">Category:</span> {selectedItem.category}</p>
-            <p><span className="label">Color:</span> {selectedItem.color}</p>
             <p><span className="label">Location Found:</span> {selectedItem.locationFound}</p>
             <p><span className="label">Date Found:</span> {new Date(selectedItem.dateFound).toLocaleDateString()}</p>
 
